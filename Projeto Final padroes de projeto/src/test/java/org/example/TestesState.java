@@ -10,7 +10,7 @@ public class TestesState {
 
     @BeforeEach
     void setUp() {
-        pedido = new Pedido(new RestauranteItaliano());
+        pedido = new Pedido(new RestaurantePizza());
     }
 
     @Test
