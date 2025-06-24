@@ -83,4 +83,125 @@ public class TesteFluxoGeral {
     }
 
 
+    @Test
+    void fluxoCompletoComPagamentoPix() {
+        Cliente cliente = new Cliente("Carlos");
+        Pedido pedido = cliente.fazerPedido("RestaurantePizza");
+
+        IRestaurante restaurante = pedido.getRestaurante();
+        restaurante.prepararPedido(pedido);
+        restaurante.sairPedido(pedido);
+        restaurante.entregarPedido(pedido);
+
+        Pagamento pagamentoOnline = new PagamentoOnline(55.0f);
+        pagamentoOnline.setMetodo(new PagamentoPix());
+        pedido.setPagamento(pagamentoOnline);
+
+        String resultadoPagamento = pedido.realizarPagamento();
+
+        Assertions.assertEquals(
+                "Iniciando pagamento em loja online... Pagamento de R$55.0 realizado via PIX.",
+                resultadoPagamento
+        );
+    }
+
+    @Test
+    void fluxoComPagamentoIndisponivelOnline_Dinheiro() {
+        Cliente cliente = new Cliente("Bruna");
+        Pedido pedido = cliente.fazerPedido("RestauranteHamburguer");
+
+        IRestaurante restaurante = pedido.getRestaurante();
+        restaurante.prepararPedido(pedido);
+        restaurante.sairPedido(pedido);
+        restaurante.entregarPedido(pedido);
+
+        Pagamento pagamentoOnline = new PagamentoOnline(30.0f);
+        pagamentoOnline.setMetodo(new PagamentoDinheiro());
+        pedido.setPagamento(pagamentoOnline);
+
+        String resultadoPagamento = pedido.realizarPagamento();
+
+        Assertions.assertEquals("Método de pagamento não disponível online", resultadoPagamento);
+    }
+
+    @Test
+    void fluxoPagamentoLojaFisicaComDebito() {
+        Cliente cliente = new Cliente("Eduardo");
+        Pedido pedido = cliente.fazerPedido("RestaurantePizza");
+
+        IRestaurante restaurante = pedido.getRestaurante();
+        restaurante.prepararPedido(pedido);
+        restaurante.sairPedido(pedido);
+        restaurante.entregarPedido(pedido);
+
+        Pagamento pagamentoFisico = new PagamentoLojaFisica(40.0f);
+        pagamentoFisico.setMetodo(new PagamentoCartaoDebito());
+        pedido.setPagamento(pagamentoFisico);
+
+        String resultadoPagamento = pedido.realizarPagamento();
+
+        Assertions.assertEquals(
+                "Iniciando pagamento em loja física... Pagamento de R$40.0 realizado com Cartão de Débito.",
+                resultadoPagamento
+        );
+    }
+
+    @Test
+    void pagamentoNaoConfigurado() {
+        Cliente cliente = new Cliente("Juliana");
+        Pedido pedido = cliente.fazerPedido("RestaurantePizza");
+
+        String resultadoPagamento = pedido.realizarPagamento();
+
+        Assertions.assertEquals("Pagamento não configurado.", resultadoPagamento);
+    }
+
+    @Test
+    void fluxoCompletoComEntregaExpress() {
+        Cliente cliente = new Cliente("Lúcia");
+        Pedido pedido = cliente.fazerPedido("RestaurantePizza");
+
+        IRestaurante restaurante = pedido.getRestaurante();
+        restaurante.prepararPedido(pedido);
+        restaurante.sairPedido(pedido);
+        restaurante.entregarPedido(pedido);
+
+        pedido.setEntrega(new FabricaExpress());
+        String resultadoEntrega = pedido.realizarEntrega();
+
+        Assertions.assertEquals(
+                "Entrega rápida com Moto. Entregador Express: Pronto para entrega rápida!",
+                resultadoEntrega
+        );
+    }
+
+    @Test
+    void fluxoCompletoComEntregaPadrao() {
+        Cliente cliente = new Cliente("Roberto");
+        Pedido pedido = cliente.fazerPedido("RestauranteHamburguer");
+
+        IRestaurante restaurante = pedido.getRestaurante();
+        restaurante.prepararPedido(pedido);
+        restaurante.sairPedido(pedido);
+        restaurante.entregarPedido(pedido);
+
+        pedido.setEntrega(new FabricaPadrao());
+        String resultadoEntrega = pedido.realizarEntrega();
+
+        Assertions.assertEquals(
+                "Entrega em grande quantidade com Carro. Entregador Padrão: Pronto para entrega regular.",
+                resultadoEntrega
+        );
+    }
+
+    @Test
+    void entregaNaoConfigurada() {
+        Cliente cliente = new Cliente("Fernanda");
+        Pedido pedido = cliente.fazerPedido("RestaurantePizza");
+
+        String resultadoEntrega = pedido.realizarEntrega();
+
+        Assertions.assertEquals("Entrega não configurada.", resultadoEntrega);
+    }
+
 }

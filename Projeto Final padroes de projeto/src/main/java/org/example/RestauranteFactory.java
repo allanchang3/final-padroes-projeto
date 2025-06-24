@@ -13,11 +13,11 @@ public class RestauranteFactory {
             classe = Class.forName("org.example." + servico);
             objeto = classe.newInstance();
         } catch (Exception var4) {
-            throw new IllegalArgumentException("Serviço inexistente");
+            throw new IllegalArgumentException("Restaurante inexistente");
         }
 
         if (!(objeto instanceof IRestaurante)) {
-            throw new IllegalArgumentException("Serviço inválido");
+            throw new IllegalArgumentException("Restaurante inválido");
         } else {
             return (IRestaurante) objeto;
         }

@@ -61,17 +61,24 @@ public class Pedido extends Observable {
         this.pagamento = pagamento;
     }
 
-    public void realizarPagamento() {
+    public String realizarPagamento() {
         if (pagamento != null) {
-            pagamento.realizarPagamento();
+            return pagamento.realizarPagamento();
         } else {
-            System.out.println("Pagamento não configurado.");
+            return "Pagamento não configurado.";
         }
     }
 
-
     public void setEntrega(FabricaAbstrata fabrica) {
         this.entrega = new Entrega(fabrica);
+    }
+
+    public String realizarEntrega() {
+        if (entrega != null) {
+            return entrega.realizarEntrega();
+        } else {
+            return "Entrega não configurada.";
+        }
     }
 
 }
