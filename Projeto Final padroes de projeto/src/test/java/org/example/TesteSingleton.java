@@ -13,9 +13,23 @@ public class TesteSingleton {
     }
 
     @Test
-    public void deveRetornarMesmoObjetoSingleton() {
-        EntregueEstado instancia1 = EntregueEstado.getInstance();
-        EntregueEstado instancia2 = EntregueEstado.getInstance();
-        assertSame(instancia1, instancia2);
+    public void deveRetornarMensagemEstadoSaiu() {
+        assertEquals("Pedido saiu para entrega!", SaiuEstado.getInstance().getEstado());
     }
+
+    @Test
+    public void deveRetornarMensagemEstadoPreparando() {
+        assertEquals("Pedido sendo preparado!", PreparandoEstado.getInstance().getEstado());
+    }
+
+    @Test
+    public void deveRetornarMensagemEstadoCriado() {
+        assertEquals("Pedido criado !", CriadoEstado.getInstance().getEstado());
+    }
+
+    @Test
+    public void deveRetornarMensagemEstadoCancelado() {
+        assertEquals("Pedido cancelado !", CanceladoEstado.getInstance().getEstado());
+    }
+
 }
