@@ -5,6 +5,9 @@ import java.util.Observable;
 public class Pedido extends Observable {
     private PedidoEstado estado;
     private IRestaurante restaurante;
+    private Pagamento pagamento;
+    private Entrega entrega;
+
 
     public Pedido(IRestaurante restaurante) {
         this.restaurante = restaurante;
@@ -53,4 +56,22 @@ public class Pedido extends Observable {
         setChanged();
         notifyObservers("Estado do pedido: " + estado.getEstado() + " (por " + nomeRestaurante + ")");
     }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public void realizarPagamento() {
+        if (pagamento != null) {
+            pagamento.realizarPagamento();
+        } else {
+            System.out.println("Pagamento não configurado.");
+        }
+    }
+
+
+    public void setEntrega(FabricaAbstrata fabrica) {
+        this.entrega = new Entrega(fabrica);
+    }
+
 }
